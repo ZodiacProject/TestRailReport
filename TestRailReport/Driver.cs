@@ -94,7 +94,7 @@ namespace TestRailReport
         public void SendReport()
         {                      
             _driver.Navigate().GoToUrl(_urlYouTrackTask);
-            Thread.Sleep(3000);
+            Thread.Sleep(4000);
             IWebElement el_you_track = _driver.FindElement(By.XPath("//*[@id='username']"));
             el_you_track.Click();
             el_you_track.SendKeys(_loginYouTrack);
@@ -111,7 +111,7 @@ namespace TestRailReport
             el_you_track.Click();
             SendKeys.SendWait(@"C:\selenium_report\report.pdf");
             SendKeys.SendWait(@"{Enter}");
-            Thread.Sleep(1000);
+            Thread.Sleep(2000);
             el_you_track = _driver.FindElement(By.XPath("//*[@id='id_l.I.ic.it.c.ac.addComment']"));
             el_you_track.Click();
             Console.WriteLine("Report is pushed");            
