@@ -9,6 +9,7 @@ using OpenQA.Selenium.Opera;
 using OpenQA.Selenium.Safari;
 using OpenQA.Selenium.Support.UI;
 using OpenQA.Selenium.Internal;
+using System.Windows.Forms;
 using System.Threading;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,24 +28,16 @@ namespace TestRailReport
     {
         private const string _login = "stepanov.guap@gmail.com";
         private const string _password = "302bis";
+        private const string _loginYouTrack = "a.stepanov@propellerads.net";
+        private const string _passwordYouTrack = "propeller";
+        private const string _urlYouTrackTask = "https://propellerads.myjetbrains.com/youtrack/issue/ITDQA-471";
         private string _url = "https://propeller.testrail.net/index.php?/reports/overview/";        
         private List<string> TopSitesOnClick = new List<string>();
         private Dictionary<string, List<string>> _sectionCaseToRun = new Dictionary<string, List<string>>();
         private Dictionary<string, string> _testCase = new Dictionary<string, string>();
         private IWebDriver _driver;
         private ZipFile _zipFile;
-        //Constuctor
-        //public Driver(TestRail test)
-        //{
-        //    _testRun = test;
-        //    _testRun.StartTestRail();
-        //    foreach (KeyValuePair<string, List<string>> case_id_section in _testRun.GetIDCaseInSection())
-        //        _sectionCaseToRun.Add(case_id_section.Key, case_id_section.Value);
-        //    foreach (KeyValuePair<string, string> test_case_name in _testRun.GetTestCaseName)
-        //        _testCase.Add(test_case_name.Key, test_case_name.Value);
-        //}
-        //methods
-        public void NavigateToTestRail(string proj_ID)
+        public Driver()
         {
             FirefoxProfile profile = new FirefoxProfile();
 
@@ -52,6 +45,9 @@ namespace TestRailReport
             profile.SetPreference("browser.download.folderList", 2);
             profile.SetPreference("browser.helperApps.neverAsk.saveToDisk", "application/zip");
             _driver = new FirefoxDriver(profile);            
+        }
+        public void NavigateToTestRail(string proj_ID)
+        {            
             _driver.Navigate().GoToUrl(_url + proj_ID);
             Thread.Sleep(2000);
             IWebElement elementLogin = _driver.FindElement(By.XPath("//*[@id='name']"));
@@ -80,7 +76,6 @@ namespace TestRailReport
                 else                
                     Console.WriteLine(reportID + " is not undefined at this project");                                                                              
         }
-
         public void ExtractFileToDirectory(string rep_ID)
         {
             IReadOnlyCollection<string> zipFilesName = Directory.GetFiles(@"C:\selenium_report\", "testrail-report-" + rep_ID + "-standalone.zip");
@@ -94,6 +89,32 @@ namespace TestRailReport
                 }        
 
             Console.WriteLine("Arhive is extract");
+        }
+
+        public void SendReport()
+        {                      
+            _driver.Navigate().GoToUrl(_urlYouTrackTask);
+            Thread.Sleep(3000);
+            IWebElement el_you_track = _driver.FindElement(By.XPath("//*[@id='username']"));
+            el_you_track.Click();
+            el_you_track.SendKeys(_loginYouTrack);
+            el_you_track = _driver.FindElement(By.XPath("//*[@id='password']"));
+            el_you_track.Click();
+            el_you_track.SendKeys(_passwordYouTrack);
+            el_you_track.Submit();
+            el_you_track = _driver.FindElement(By.XPath("//*[@id='id_l.I.ic.it.c.ac.commentTextarea']"));
+            el_you_track.Click();
+            el_you_track.SendKeys("Testrail auto report");
+            el_you_track = _driver.FindElement(By.XPath("//*[@id='id_l.I.ic.it.c.ac.addFileMenu']"));
+            el_you_track.Click();
+            el_you_track = _driver.FindElement(By.XPath("//*[@id='id_l.I.ic.it.c.ac.uploadFile']"));
+            el_you_track.Click();
+            SendKeys.SendWait(@"C:\selenium_report\report.pdf");
+            SendKeys.SendWait(@"{Enter}");
+            Thread.Sleep(1000);
+            el_you_track = _driver.FindElement(By.XPath("//*[@id='id_l.I.ic.it.c.ac.addComment']"));
+            el_you_track.Click();
+            Console.WriteLine("Report is pushed");            
         }
         private string _getСonversionDate(DateTime date)
         {
@@ -111,8 +132,7 @@ namespace TestRailReport
         }
         public void CloseDriver()
         {
-            _driver.Quit();            
+            _driver.Close();        
         }
-    
     }
 }
