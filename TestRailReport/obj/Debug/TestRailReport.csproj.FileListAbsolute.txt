@@ -7,7 +7,6 @@ C:\GitHub\Projects\TestRailReport\TestRailReport\bin\Debug\Newtonsoft.Json.dll
 C:\GitHub\Projects\TestRailReport\TestRailReport\bin\Debug\WebDriver.dll
 C:\GitHub\Projects\TestRailReport\TestRailReport\bin\Debug\WebDriver.Support.dll
 C:\GitHub\Projects\TestRailReport\TestRailReport\bin\Debug\Gurock.TestRail.pdb
-C:\GitHub\Projects\TestRailReport\TestRailReport\bin\Debug\Newtonsoft.Json.xml
 C:\GitHub\Projects\TestRailReport\TestRailReport\bin\Debug\WebDriver.pdb
 C:\GitHub\Projects\TestRailReport\TestRailReport\bin\Debug\WebDriver.xml
 C:\GitHub\Projects\TestRailReport\TestRailReport\bin\Debug\WebDriver.Support.pdb
@@ -19,3 +18,5 @@ C:\GitHub\Projects\TestRailReport\TestRailReport\bin\Debug\Ionic.Zip.xml
 C:\GitHub\Projects\TestRailReport\TestRailReport\bin\Debug\Select.Html.dep
 C:\GitHub\Projects\TestRailReport\TestRailReport\bin\Debug\Select.HtmlToPdf.dll
 C:\GitHub\Projects\TestRailReport\TestRailReport\bin\Debug\Select.HtmlToPdf.xml
+C:\GitHub\Projects\TestRailReport\TestRailReport\bin\Debug\RestSharp.dll
+C:\GitHub\Projects\TestRailReport\TestRailReport\bin\Debug\RestSharp.xml

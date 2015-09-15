@@ -27,10 +27,7 @@ namespace TestRailReport
     class Driver
     {
         private const string _login = "stepanov.guap@gmail.com";
-        private const string _password = "302bis";
-        private const string _loginYouTrack = "a.stepanov@propellerads.net";
-        private const string _passwordYouTrack = "propeller";
-        private const string _urlYouTrackTask = "https://propellerads.myjetbrains.com/youtrack/issue/ITDQA-471";
+        private const string _password = "302bis";     
         private string _url = "https://propeller.testrail.net/index.php?/reports/overview/";        
         private List<string> TopSitesOnClick = new List<string>();
         private Dictionary<string, List<string>> _sectionCaseToRun = new Dictionary<string, List<string>>();
@@ -89,32 +86,6 @@ namespace TestRailReport
                 }        
 
             Console.WriteLine("Arhive is extract");
-        }
-
-        public void SendReport()
-        {                      
-            _driver.Navigate().GoToUrl(_urlYouTrackTask);
-            Thread.Sleep(4000);
-            IWebElement el_you_track = _driver.FindElement(By.XPath("//*[@id='username']"));
-            el_you_track.Click();
-            el_you_track.SendKeys(_loginYouTrack);
-            el_you_track = _driver.FindElement(By.XPath("//*[@id='password']"));
-            el_you_track.Click();
-            el_you_track.SendKeys(_passwordYouTrack);
-            el_you_track.Submit();
-            el_you_track = _driver.FindElement(By.XPath("//*[@id='id_l.I.ic.it.c.ac.commentTextarea']"));
-            el_you_track.Click();
-            el_you_track.SendKeys("Testrail auto report");
-            el_you_track = _driver.FindElement(By.XPath("//*[@id='id_l.I.ic.it.c.ac.addFileMenu']"));
-            el_you_track.Click();
-            el_you_track = _driver.FindElement(By.XPath("//*[@id='id_l.I.ic.it.c.ac.uploadFile']"));
-            el_you_track.Click();
-            SendKeys.SendWait(@"C:\selenium_report\report.pdf");
-            SendKeys.SendWait(@"{Enter}");
-            Thread.Sleep(2000);
-            el_you_track = _driver.FindElement(By.XPath("//*[@id='id_l.I.ic.it.c.ac.addComment']"));
-            el_you_track.Click();
-            Console.WriteLine("Report is pushed");            
         }
         private string _getСonversionDate(DateTime date)
         {
