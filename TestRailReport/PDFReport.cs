@@ -10,7 +10,9 @@ namespace TestRailReport
 {
     public partial class PDFReport : System.Web.UI.Page
     {
-        private string _nameReport = null;      
+        private string _nameReport = null;
+        private string _url = null;
+        private string _savePath = null;
         public void CreatePDF(string nameReport)
         {
             // name of report in folder
@@ -19,12 +21,12 @@ namespace TestRailReport
             HtmlToPdf converter = new HtmlToPdf();
 
             // create a new pdf document converting an url
-            string url = @"C:\selenium_report\test_rail_report_" + _nameReport + "\\index.html";
-            PdfDocument doc = converter.ConvertUrl(url);
+            _url = @"C:\selenium_report\test_rail_report_" + _nameReport + "\\index.html";
+            _savePath = @"C:\selenium_report\" + _nameReport + "_report.pdf";
+            PdfDocument doc = converter.ConvertUrl(_url);
                 
             // get conversion result (contains document info from the web page)
             HtmlToPdfResult result = converter.ConversionResult;
-            string savePath = @"C:\selenium_report\" + _nameReport + "_report.pdf";
             // set the document properties
             doc.DocumentInformation.Title = result.WebPageInformation.Title;
             doc.DocumentInformation.Subject = result.WebPageInformation.Description;
@@ -33,14 +35,14 @@ namespace TestRailReport
             doc.DocumentInformation.Author = "Select.Pdf Samples";
             doc.DocumentInformation.CreationDate = DateTime.Now;
             // save pdf document                  
-            doc.Save(savePath);
+            doc.Save(_savePath);
             //doc.Save(Response, false, "Yes.pdf");
             Console.WriteLine("Report is create");
             // close pdf document
             doc.Close();
 
 //Attach file & add comment to task ITDQA-471            
-            YouTrackAPI YouTrackAPI = new YouTrackAPI(savePath);
+            YouTrackAPI YouTrackAPI = new YouTrackAPI(_savePath);
             YouTrackAPI.AttachFileToTask();
             YouTrackAPI.AddComments();
         }
