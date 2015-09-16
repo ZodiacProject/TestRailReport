@@ -16,17 +16,18 @@ namespace TestRailReport
     {
         private string _youTrackBaseUrl = "https://propellerads.myjetbrains.com/youtrack/rest/";
         private const string _loginYouTrack = "a.stepanov@propellerads.net";
-        private const string _passwordYouTrack = "propeller";
-        private const string _pathFile = @"C:\selenium_report\report.pdf";
+        private const string _passwordYouTrack = "propeller";        
         private const string _logIN = "user/login";
         private const string _attachToTask = "issue/ITDQA-471/attachment";
         private string _comment = null;
+        private string _pathFile = null;
         private RestClient _client;
         private RestRequest _request;
         private IRestResponse _loginResponse;
 
-        public YouTrackAPI()
+        public YouTrackAPI(string pathFile)
         {
+            this._pathFile = pathFile;
             this._client = new RestClient(_youTrackBaseUrl);
             this._request = new RestRequest(_logIN, Method.POST);
             this._client.Authenticator = new SimpleAuthenticator("login", _loginYouTrack, "password", _passwordYouTrack);
@@ -42,25 +43,21 @@ namespace TestRailReport
             }        
             request.AddFile("Report", _pathFile);
             IRestResponse response = _client.Execute(request);
-            Console.Write("\n");
             Console.WriteLine("Attach file: " + response.StatusCode);
         }
         public void AddComments()
         {
             DateTime date = DateTime.Now;
-            switch (date.DayOfWeek.ToString())
+            switch(date.DayOfWeek.ToString())
             {
-                case "Monday": _comment = "Onclick & Interstitial";
+                case "Monday": _comment = "Monday Autotest TestRail report";
                     break;
-                case "Tuesday": _comment = "Pushup & Interstitial";
+                case "Wednesday": _comment = "Wednesday Autotest TestRail report";
                     break;
-                case "Wednesday": _comment = "Mobile & Mac desktop Onclick";
+                default:
                     break;
-                case "Friday": _comment = "Pushup & Interstitial";
-                    break;
-                default: break;
             }
-            RestRequest request = new RestRequest("issue/ITDQA-471/execute?comment=Pushup & Interstitial", Method.POST);
+            RestRequest request = new RestRequest("issue/ITDQA-471/execute?comment=" + _comment, Method.POST);
             for (int i = 0; i < _loginResponse.Cookies.Count; i++)
             {
                 request.AddCookie(_loginResponse.Cookies[i].Name, _loginResponse.Cookies[i].Value);

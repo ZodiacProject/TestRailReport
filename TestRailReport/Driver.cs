@@ -19,21 +19,16 @@ using System.Diagnostics;
 using System.IO;
 using Ionic.Zip;
 
-
-
-
 namespace TestRailReport
 {
     class Driver
     {
         private const string _login = "stepanov.guap@gmail.com";
         private const string _password = "302bis";     
-        private string _url = "https://propeller.testrail.net/index.php?/reports/overview/";        
-        private List<string> TopSitesOnClick = new List<string>();
-        private Dictionary<string, List<string>> _sectionCaseToRun = new Dictionary<string, List<string>>();
-        private Dictionary<string, string> _testCase = new Dictionary<string, string>();
+        private string _url = "https://propeller.testrail.net/index.php?/reports/overview/3"; // the url only for Automatically tests         
         private IWebDriver _driver;
         private ZipFile _zipFile;
+        private string _nameReport = null;
         public Driver()
         {
             FirefoxProfile profile = new FirefoxProfile();
@@ -43,9 +38,9 @@ namespace TestRailReport
             profile.SetPreference("browser.helperApps.neverAsk.saveToDisk", "application/zip");
             _driver = new FirefoxDriver(profile);            
         }
-        public void NavigateToTestRail(string proj_ID)
+        public void LogINToTestRail()
         {            
-            _driver.Navigate().GoToUrl(_url + proj_ID);
+            _driver.Navigate().GoToUrl(_url);
             Thread.Sleep(2000);
             IWebElement elementLogin = _driver.FindElement(By.XPath("//*[@id='name']"));
             elementLogin.Click();
@@ -55,37 +50,40 @@ namespace TestRailReport
             elementPass.SendKeys(_password);
             elementPass.Submit();
         }
-        public void FindReport(string reportID)
-        {            
+        public void FindReport()
+        {                 
             IWebElement elementFindRep, elementDwLoadRep;
             DateTime date = DateTime.Today;
-            //string linkReport = //date.DayOfWeek + ": " + _getСonversionDate(date);//date.Day.ToString() + date.Month.ToString() + date.Year.ToString();
-       
-                if (_driver.PageSource.Contains(reportID))
-                {                                       //(By.XPath("//*[@id='report-234']/td[2]/a"));
-                    elementFindRep = _driver.FindElement(By.XPath("//*[@id='report-" + reportID + "']/td[2]/a"));
+            string linkReport = date.DayOfWeek + ": " + _getСonversionDate(date);
+                if (_driver.PageSource.Contains(linkReport))
+                {                                       
+                    elementFindRep = _driver.FindElement(By.LinkText(linkReport));
                     elementFindRep.Click();
                     elementDwLoadRep = _driver.FindElement(By.XPath("//*[@id='content-header']/div/span[1]/a/img"));
                     elementDwLoadRep.Click();
                     Console.WriteLine("Report is download");
                     Thread.Sleep(2000);
                     }
-                else                
-                    Console.WriteLine(reportID + " is not undefined at this project");                                                                              
+                else
+                    Console.WriteLine(linkReport + " not found");                                                                              
         }
-        public void ExtractFileToDirectory(string rep_ID)
+        public void ExtractFileToDirectory()
         {
-            IReadOnlyCollection<string> zipFilesName = Directory.GetFiles(@"C:\selenium_report\", "testrail-report-" + rep_ID + "-standalone.zip");
-            string outputDirectory = @"C:\selenium_report\test_rail_report_" + rep_ID;
+
+            this._nameReport = _driver.Url.Substring(_driver.Url.LastIndexOf("/")).Remove(0, 1); //обрезка символа '/'
+            IReadOnlyCollection<string> zipFilesName = Directory.GetFiles(@"C:\selenium_report\", "testrail-report-" + this._nameReport + "-standalone.zip");
+            string outputDirectory = @"C:\selenium_report\test_rail_report_" + this._nameReport;
             _zipFile = ZipFile.Read(zipFilesName.ElementAt(0));
                 foreach (ZipEntry e in _zipFile)
                 {
-                // check if you want to extract e or not
-                 //   if (e.FileName.Contains(rep_ID))
                         e.Extract(outputDirectory, ExtractExistingFileAction.OverwriteSilently);
                 }        
 
             Console.WriteLine("Arhive is extract");
+//create report to PDF
+            PDFReport PDFReport = new PDFReport();
+            PDFReport.CreatePDF(_nameReport);
+
         }
         private string _getСonversionDate(DateTime date)
         {
