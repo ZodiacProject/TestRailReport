@@ -57,12 +57,9 @@ namespace TestRailReport
         }
         public void FindReport(string reportID)
         {            
-            IWebElement elementFindRep, elementDwLoadRep;
-            DateTime date = DateTime.Today;
-            //string linkReport = //date.DayOfWeek + ": " + _getСonversionDate(date);//date.Day.ToString() + date.Month.ToString() + date.Year.ToString();
-       
+            IWebElement elementFindRep, elementDwLoadRep;       
                 if (_driver.PageSource.Contains(reportID))
-                {                                       //(By.XPath("//*[@id='report-234']/td[2]/a"));
+                {                                       
                     elementFindRep = _driver.FindElement(By.XPath("//*[@id='report-" + reportID + "']/td[2]/a"));
                     elementFindRep.Click();
                     elementDwLoadRep = _driver.FindElement(By.XPath("//*[@id='content-header']/div/span[1]/a/img"));

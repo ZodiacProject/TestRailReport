@@ -19,17 +19,13 @@ namespace TestRailReport
 
             Driver Driver = new Driver();
             PDFReport PDFReport = new PDFReport();
-            YouTrackAPI YouTrackAPI = new YouTrackAPI();
 
             Driver.NavigateToTestRail(idProject);
             Driver.FindReport(reportID);
             Driver.ExtractFileToDirectory(reportID);
-            PDFReport.BtnCreatePdf(reportID);
-
-            //Attach file & add comment to task ITDQA-471            
-            YouTrackAPI.AttachFileToTask();
-            YouTrackAPI.AddComments();
             Driver.CloseDriver();
+            PDFReport.CreatePDF(reportID);
+            
         }
     }
 }

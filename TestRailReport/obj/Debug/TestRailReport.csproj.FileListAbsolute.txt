@@ -1,5 +1,4 @@
 C:\GitHub\Projects\TestRailReport\TestRailReport\bin\Debug\TestRailReport.exe.config
-C:\GitHub\Projects\TestRailReport\TestRailReport\obj\Debug\TestRailReport.csprojResolveAssemblyReference.cache
 C:\GitHub\Projects\TestRailReport\TestRailReport\bin\Debug\TestRailReport.exe
 C:\GitHub\Projects\TestRailReport\TestRailReport\bin\Debug\TestRailReport.pdb
 C:\GitHub\Projects\TestRailReport\TestRailReport\bin\Debug\Gurock.TestRail.dll
