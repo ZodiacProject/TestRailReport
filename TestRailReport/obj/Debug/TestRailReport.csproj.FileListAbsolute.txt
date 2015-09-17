@@ -19,3 +19,4 @@ C:\GitHub\Projects\TestRailReport\TestRailReport\bin\Debug\Select.HtmlToPdf.dll
 C:\GitHub\Projects\TestRailReport\TestRailReport\bin\Debug\Select.HtmlToPdf.xml
 C:\GitHub\Projects\TestRailReport\TestRailReport\bin\Debug\RestSharp.dll
 C:\GitHub\Projects\TestRailReport\TestRailReport\bin\Debug\RestSharp.xml
+C:\GitHub\Projects\TestRailReport\TestRailReport\obj\Debug\TestRailReport.csprojResolveAssemblyReference.cache

@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Gurock.TestRail;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using RestSharp;
 using RestSharp.Authenticators;
 using RestSharp.Validation;
@@ -14,16 +11,17 @@ namespace TestRailReport
 {
     class YouTrackAPI
     {
-        private string _youTrackBaseUrl = "https://propellerads.myjetbrains.com/youtrack/rest/";
+        private const string _youTrackBaseUrl = "https://propellerads.myjetbrains.com/youtrack/rest/";
         private const string _loginYouTrack = "a.stepanov@propellerads.net";
         private const string _passwordYouTrack = "propeller";
         private const string _logIN = "user/login";
         private const string _attachToTask = "issue/ITDQA-471/attachment";
-        private string _comment = null;
-        private string _pathFile = null;
+        private const string _addComment = "issue/ITDQA-471/execute?comment=";
         private RestClient _client;
         private RestRequest _request;
         private IRestResponse _loginResponse;
+        private string _comment = null;
+        private string _pathFile = null;
 
         public YouTrackAPI(string pathFile)
         {
@@ -58,15 +56,16 @@ namespace TestRailReport
                     break;
                 case "Friday": _comment = "Pushup and Interstitial";
                     break;
-                default: break;
+                default: _comment = "Another day TestRail report";
+                    break;
             }
-            RestRequest request = new RestRequest("issue/ITDQA-471/execute?comment=" + _comment, Method.POST);
+            RestRequest request = new RestRequest(_addComment + _comment, Method.POST);
             for (int i = 0; i < _loginResponse.Cookies.Count; i++)
             {
                 request.AddCookie(_loginResponse.Cookies[i].Name, _loginResponse.Cookies[i].Value);
             }            
             IRestResponse response = _client.Execute(request);
-            Console.WriteLine("Add comments: " + response.StatusCode);
+            Console.WriteLine("Add status: " + response.StatusCode);
         }
     }
    

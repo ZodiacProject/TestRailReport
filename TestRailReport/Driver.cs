@@ -1,14 +1,8 @@
 ﻿using System;
-using Newtonsoft.Json.Linq;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
-using OpenQA.Selenium.IE;
-using OpenQA.Selenium.Edge;
-using OpenQA.Selenium.Opera;
-using OpenQA.Selenium.Safari;
 using OpenQA.Selenium.Support.UI;
-using OpenQA.Selenium.Internal;
 using System.Windows.Forms;
 using System.Threading;
 using System.Collections.Generic;
@@ -19,9 +13,6 @@ using System.Diagnostics;
 using System.IO;
 using Ionic.Zip;
 
-
-
-
 namespace TestRailReport
 {
     class Driver
@@ -29,24 +20,20 @@ namespace TestRailReport
         private const string _login = "stepanov.guap@gmail.com";
         private const string _password = "302bis";     
         private string _url = "https://propeller.testrail.net/index.php?/reports/overview/";        
-        private List<string> TopSitesOnClick = new List<string>();
-        private Dictionary<string, List<string>> _sectionCaseToRun = new Dictionary<string, List<string>>();
-        private Dictionary<string, string> _testCase = new Dictionary<string, string>();
         private IWebDriver _driver;
         private ZipFile _zipFile;
         public Driver()
         {
             FirefoxProfile profile = new FirefoxProfile();
-
             profile.SetPreference("browser.download.dir", @"C:\selenium_report\");
             profile.SetPreference("browser.download.folderList", 2);
             profile.SetPreference("browser.helperApps.neverAsk.saveToDisk", "application/zip");
             _driver = new FirefoxDriver(profile);            
         }
-        public void NavigateToTestRail(string proj_ID)
+        public void LogINToTestRail(string proj_ID)
         {            
             _driver.Navigate().GoToUrl(_url + proj_ID);
-            Thread.Sleep(2000);
+            Thread.Sleep(3000);
             IWebElement elementLogin = _driver.FindElement(By.XPath("//*[@id='name']"));
             elementLogin.Click();
             elementLogin.SendKeys(_login);
