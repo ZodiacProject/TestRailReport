@@ -36,10 +36,6 @@ namespace TestRailReport
             Console.WriteLine("Report is create");
             // close pdf document
             doc.Close();
-            //Attach file & add comment to task ITDQA-471            
-            YouTrackAPI YouTrackAPI = new YouTrackAPI(_savePath);
-            YouTrackAPI.AttachFileToTask();
-            YouTrackAPI.AddComments();
         }     
     }
 }
